@@ -1,3 +1,7 @@
+# 是给x86 windows 用的
+# pip install keystone-engine numpy rich
+# author: Northshad0w
+# date: 2022-8-23
 import sys
 import argparse
 import ctypes, struct, numpy
