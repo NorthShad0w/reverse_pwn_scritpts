@@ -2,6 +2,8 @@
 # pip install keystone-engine numpy rich
 # author: Northshad0w
 # date: 2022-8-23
+
+# 手动修改badchar后直接运行就行，根据ip端口改传进去的参数，badchar会自动标出，找到对应的地方的汇编代码，改就完事了
 import sys
 import argparse
 import ctypes, struct, numpy
