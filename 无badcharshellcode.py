@@ -2,6 +2,10 @@
 # pip install keystone-engine numpy rich
 # author: Northshad0w
 # date: 2022-8-23
+
+#|-------------------------------------------------------------|
+#|没有 \x00\x09\x0a\x0b\x0c\x0d\x20这些badchar                  |
+#|-------------------------------------------------------------|
 import sys
 import argparse
 import ctypes, struct, numpy
